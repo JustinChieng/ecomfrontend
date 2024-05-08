@@ -31,14 +31,22 @@ export default function ProductCard(props) {
     },
   });
 
+  
+
   const addToCartMutation = useMutation({
     mutationFn: addToCart,
     onSuccess: () => {
-      enqueueSnackbar("Product added to cart", {
+      // display success message
+      enqueueSnackbar("Product has been added to cart successfully.", {
         variant: "success",
+      });
+      // reset the cart data
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
       });
     },
     onError: (error) => {
+      // display error message
       enqueueSnackbar(error.response.data.message, {
         variant: "error",
       });

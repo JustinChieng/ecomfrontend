@@ -1,55 +1,71 @@
-import { Typography, Divider, Container, Button } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Typography, Divider, Box, Button } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleHomeClick = () => {
-    navigate("/"); // Change the path to the desired home route
-  };
+  let pageTitle = "Welcome to My Store";
 
-  const handleCartClick = () => {
-    navigate("/cart"); // Change the path to the desired cart route
-  };
+  if (location.pathname === "/cart") {
+    pageTitle = "Cart";
+  } else if (location.pathname === "/checkout") {
+    pageTitle = "Checkout";
+  } else if (location.pathname === "/orders") {
+    pageTitle = "Orders";
+  }
 
   return (
     <>
-      {location.pathname === "/cart" ? (
-        <Typography
-          variant="h3"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            margin: "10px",
+      <Typography
+        variant="h6"
+        component="div"
+        sx={{
+          textAlign: "center",
+          marginTop: "20px",
+          marginBottm: "20px",
+          fontWeight: "bold",
+          fontSize: "40px",
+        }}
+      >
+        {pageTitle}
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Home
+        </Button>
+        <Button
+          style={
+            {
+              // color: location.pathname === "/cart" ? "white" : "inherit",
+              // backgroundColor:
+              //   location.pathname === "/cart" ? "#238be6" : "inherit",
+            }
+          }
+          onClick={() => {
+            navigate("/cart");
           }}
         >
           Cart
-        </Typography>
-      ) : (
-        <Typography
-          variant="h3"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            margin: "10px",
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/orders");
           }}
         >
-          Welcome to our store
-        </Typography>
-      )}
-
-      <Container
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button onClick={handleHomeClick}>Home</Button>
-        <Button onClick={handleCartClick}>Cart</Button>
-      </Container>
-
+          My Orders
+        </Button>
+      </Box>
       <Divider />
     </>
   );
