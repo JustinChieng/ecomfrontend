@@ -15,7 +15,6 @@ export function addToCart(product) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-
 export function getCart() {
   // get cart items from local storage
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -27,4 +26,8 @@ export function removeProductFromCart(_id) {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const updatedCart = cart.filter((p) => p._id !== _id);
   localStorage.setItem("cart", JSON.stringify(updatedCart));
+}
+
+export function emptyCart() {
+  localStorage.removeItem("cart");
 }

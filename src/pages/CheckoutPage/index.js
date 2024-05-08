@@ -20,7 +20,7 @@ import {
   Paper,
 } from "@mui/material";
 import Header from "../../components/Header";
-import { getCart } from "../../utils/api_cart";
+import { getCart, emptyCart } from "../../utils/api_cart";
 import { addNewOrder } from "../../utils/api_orders";
 import { useState } from "react";
 
@@ -39,7 +39,8 @@ export default function CheckoutPage() {
   const addNewOrderMutation = useMutation({
     mutationFn: addNewOrder,
     onSuccess: () => {
-      navigate("orders");
+      emptyCart();
+      navigate("/orders");
     },
     onError: (error) => {
       enqueueSnackbar(error.response.data.message, {

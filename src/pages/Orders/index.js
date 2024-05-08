@@ -105,7 +105,9 @@ export default function OrderPage() {
                     }
                     disabled={item.status === "pending"}
                   >
-                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="pending" disabled={true}>
+                          Pending
+                        </MenuItem>
                     <MenuItem value="paid">Paid</MenuItem>
                     <MenuItem value="failed">Failed</MenuItem>
                     <MenuItem value="completed">Completed</MenuItem>
