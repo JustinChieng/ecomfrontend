@@ -81,6 +81,7 @@ export default function ProductCard(props) {
           >
             {product.name}
           </Typography>
+          
 
           <Box
             sx={{

@@ -113,7 +113,7 @@ export default function OrderPage() {
                     <MenuItem value="completed">Completed</MenuItem>
                   </Select>
                 </TableCell>
-                <TableCell align="center">{item.paymentDate}</TableCell>
+                <TableCell align="center">{item.paid_at}</TableCell>
                 <TableCell align="right">
                   <Button
                     color="error"

@@ -38,9 +38,13 @@ export default function CheckoutPage() {
 
   const addNewOrderMutation = useMutation({
     mutationFn: addNewOrder,
-    onSuccess: () => {
+    onSuccess: (responseData) => {
+      // remove all the items from the cart
       emptyCart();
-      navigate("/orders");
+      // get the billplz url (responseData.billplz_url)
+      const billplz_url = responseData.billplz_url;
+      // redirect user to billplz payment page
+      window.location.href = billplz_url;
     },
     onError: (error) => {
       enqueueSnackbar(error.response.data.message, {

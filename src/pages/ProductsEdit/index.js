@@ -2,14 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
-
 import Header from "../../components/Header";
 import {
   Typography,
   Button,
-  FormControl,
-  InputLabel,
-  Box,
   Grid,
   Container,
   Card,
@@ -17,6 +13,7 @@ import {
   TextField,
 } from "@mui/material";
 import { getProduct, updateProduct } from "../../utils/api_product";
+import { uploadImage } from "../../utils/api_images";
 
 export default function ProductsEdit() {
   const { id } = useParams();
@@ -26,10 +23,11 @@ export default function ProductsEdit() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
 
   // get data from product api: /products/:id
   const {
-    data: product = {},
+    data: product,
     error,
     isLoading,
   } = useQuery({
@@ -37,25 +35,30 @@ export default function ProductsEdit() {
     queryFn: () => getProduct(id),
   });
 
-  // when data is fetched from API, set the states for all the field
+  // when data is fetched from API, set the states for all the fields with its current value
   useEffect(() => {
+    // if product is not undefined
     if (product) {
       setName(product.name);
       setDescription(product.description);
       setPrice(product.price);
       setCategory(product.category);
+      setImage(product.image ? product.image : "");
     }
   }, [product]);
 
   const updateProductMutation = useMutation({
     mutationFn: updateProduct,
     onSuccess: () => {
+      // display success message
       enqueueSnackbar("Product is updated", {
         variant: "success",
       });
+      // redirect back to home page
       navigate("/");
     },
-    onError: () => {
+    onError: (error) => {
+      // display error message
       enqueueSnackbar(error.response.data.message, {
         variant: "error",
       });
@@ -64,22 +67,41 @@ export default function ProductsEdit() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    //trigger the mutation to call the API
+    // trigger the mutation to call the API
     updateProductMutation.mutate({
       id: id,
       name: name,
       description: description,
       price: price,
       category: category,
+      image: image,
     });
   };
 
-  //if API data haven't return yet
+  // upload image mutation
+  const uploadImageMutation = useMutation({
+    mutationFn: uploadImage,
+    onSuccess: (data) => {
+      setImage(data.image_url);
+    },
+    onError: (error) => {
+      // display error message
+      enqueueSnackbar(error.response.data.message, {
+        variant: "error",
+      });
+    },
+  });
+
+  const handleImageUpload = (event) => {
+    uploadImageMutation.mutate(event.target.files[0]);
+  };
+
+  // if API data is still loading
   if (isLoading) {
     return <Container>Loading...</Container>;
   }
 
-  //if tehre is an error in the API call
+  // if there is an error in API call
   if (error) {
     return <Container>{error.response.data.message}</Container>;
   }
@@ -138,8 +160,42 @@ export default function ProductsEdit() {
               />
             </Grid>
             <Grid item xs={12}>
+              {image !== "" ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={"http://localhost:5000/" + image}
+                      width="300px"
+                      height="300px"
+                    />
+                  </div>
+                  <Button onClick={() => setImage("")}>Remove Image</Button>
+                </div>
+              ) : (
+                <input
+                  type="file"
+                  multiple={false}
+                  onChange={handleImageUpload}
+                />
+              )}
+            </Grid>
+
+            <Grid item xs={12}>
               <Button variant="contained" fullWidth onClick={handleFormSubmit}>
-                Submit
+                Update
               </Button>
             </Grid>
           </Grid>

@@ -121,12 +121,7 @@ export default function Products() {
             padding: "20px 0",
           }}
         >
-          <Button
-            disabled={page === 1 ? true : false}
-            onClick={() => setPage(page - 1)}
-          >
-            Previous
-          </Button>
+          
           <span>Page: {page}</span>
           <Button
             disabled={rows.length === 0 ? true : false}

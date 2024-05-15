@@ -8,6 +8,9 @@ import ProductsEdit from "./pages/ProductsEdit";
 import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderPage from "./pages/Orders";
+import PaymentVerify from "./pages/PaymentVerify";
+import Login from "./pages/UserLogin";
+import Signup from "./pages/UserSignUp";
 //create a client
 const queryClient = new QueryClient();
 
@@ -30,6 +33,9 @@ export default function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/orders" element={<OrderPage />} />
+            <Route path="/verify-payment" element={<PaymentVerify />} />
+            <Route path="login" element={<Login />}/>
+            <Route path="signup" element={<Signup />}/>
           </Routes>
         </BrowserRouter>
       </SnackbarProvider>
